@@ -7,7 +7,8 @@ SECRET_KEY = "django-insecure-caregiver-platform-2025-secret-key"
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['.pythonanywhere.com']
+
 
 INSTALLED_APPS = [
     "django.contrib.admin",
