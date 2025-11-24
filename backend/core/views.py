@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db import connection
 from django.contrib import messages
-from .models import User, Caregiver, Member, Job, Appointment, JobApplication
+from .models import User, Caregiver, Member, Job, Appointment, JobApplication, Address
 
 def index(request):
     with connection.cursor() as cursor:
@@ -301,8 +301,16 @@ def job_application_list(request):
     return render(request, 'job_applications/job_application_list.html', {'job_applications': job_applications})
 
 def job_application_detail(request, caregiver_id, job_id):
-    job_application = get_object_or_404(JobApplication, caregiver_user_id=caregiver_id, job_id=job_id)
-    return render(request, 'job_applications/job_application_detail.html', {'job_application': job_application})
+    job_application = get_object_or_404(
+        JobApplication,
+        caregiver_id=caregiver_id,   # имя поля в модели -> caregiver
+        job_id=job_id
+    )
+    return render(
+        request,
+        "job_applications/job_application_detail.html",
+        {"job_application": job_application},
+    )
 
 def job_application_create(request):
     if request.method == 'POST':
@@ -325,5 +333,108 @@ def job_application_delete(request, caregiver_id, job_id):
             cursor.execute("DELETE FROM job_application WHERE caregiver_user_id = %s AND job_id = %s", [caregiver_id, job_id])
         messages.success(request, 'Job application deleted successfully!')
         return redirect('job_application_list')
-    job_application = get_object_or_404(JobApplication, caregiver_user_id=caregiver_id, job_id=job_id)
+    job_application = get_object_or_404(
+        JobApplication,
+        caregiver_id=caregiver_id,
+        job_id=job_id,
+    )
     return render(request, 'job_applications/job_application_confirm_delete.html', {'job_application': job_application})
+
+def job_application_update(request, caregiver_id, job_id):
+    job_application = get_object_or_404(
+        JobApplication,
+        caregiver_id=caregiver_id,
+        job_id=job_id,
+    )
+    if request.method == "POST":
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                UPDATE job_application
+                SET date_applied = %s
+                WHERE caregiver_user_id = %s AND job_id = %s
+                """,
+                [
+                    request.POST["date_applied"],
+                    caregiver_id,
+                    job_id,
+                ],
+            )
+        messages.success(request, "Job application updated successfully!")
+        return redirect("job_application_list")
+
+    return render(
+        request,
+        "job_applications/job_application_form.html",
+        {"job_application": job_application},
+    )
+
+
+def address_list(request):
+    addresses = Address.objects.select_related("member__member_user").all()
+    return render(request, "addresses/address_list.html", {"addresses": addresses})
+
+
+def address_detail(request, pk):
+    address = get_object_or_404(Address, id=pk)
+    return render(request, "addresses/address_detail.html", {"address": address})
+
+
+def address_create(request):
+    if request.method == "POST":
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                INSERT INTO address (member_user_id, house_number, street, town)
+                VALUES (%s, %s, %s, %s)
+                """,
+                [
+                    request.POST["member_user_id"],
+                    request.POST["house_number"],
+                    request.POST["street"],
+                    request.POST["town"],
+                ],
+            )
+        messages.success(request, "Address created successfully!")
+        return redirect("address_list")
+
+    return render(request, "addresses/address_form.html")
+
+
+def address_update(request, pk):
+    address = get_object_or_404(Address, id=pk)
+    if request.method == "POST":
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                UPDATE address
+                SET member_user_id=%s, house_number=%s, street=%s, town=%s
+                WHERE id=%s
+                """,
+                [
+                    request.POST["member_user_id"],
+                    request.POST["house_number"],
+                    request.POST["street"],
+                    request.POST["town"],
+                    pk,
+                ],
+            )
+        messages.success(request, "Address updated successfully!")
+        return redirect("address_list")
+
+    return render(request, "addresses/address_form.html", {"address": address})
+
+
+def address_delete(request, pk):
+    address = get_object_or_404(Address, id=pk)
+    if request.method == "POST":
+        with connection.cursor() as cursor:
+            cursor.execute("DELETE FROM address WHERE id = %s", [pk])
+        messages.success(request, "Address deleted successfully!")
+        return redirect("address_list")
+
+    return render(
+        request,
+        "addresses/address_confirm_delete.html",
+        {"address": address},
+    )
