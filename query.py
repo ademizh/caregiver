@@ -14,16 +14,14 @@ def run_select(label, sql, params=None):
         if not rows:
             print("(no rows)")
 
-
 def run_execute(label, sql, params=None):
     print(f"\n===== {label} =====")
-    with engine.begin() as conn:  # begin = с транзакцией
+    with engine.begin() as conn:
         result = conn.execute(text(sql), params or {})
         try:
             print("Rows affected:", result.rowcount)
         except Exception:
             pass
-
 
 def update_3_1():
     sql = """
@@ -32,7 +30,6 @@ def update_3_1():
         WHERE given_name = 'Arman' AND surname = 'Armanov';
     """
     run_execute("3.1 Update Arman Armanov phone number", sql)
-
 
 def update_3_2():
     sql = """
@@ -44,7 +41,6 @@ def update_3_2():
     """
     run_execute("3.2 Add commission to caregivers' hourly_rate", sql)
 
-
 def delete_4_1():
     sql = """
         DELETE j
@@ -54,7 +50,6 @@ def delete_4_1():
         WHERE u.given_name = 'Amina' AND u.surname = 'Aminova';
     """
     run_execute("4.1 Delete jobs posted by Amina Aminova", sql)
-
 
 def delete_4_2():
     sql = """
@@ -81,7 +76,6 @@ def simple_5_1():
     """
     run_select("5.1 Caregiver and member names for accepted appointments", sql)
 
-
 def simple_5_2():
     sql = """
         SELECT job_id
@@ -89,7 +83,6 @@ def simple_5_2():
         WHERE LOWER(other_requirements) LIKE '%soft-spoken%';
     """
     run_select("5.2 Job IDs containing 'soft-spoken' in requirements", sql)
-
 
 def simple_5_3():
     sql = """
@@ -99,7 +92,6 @@ def simple_5_3():
         WHERE c.caregiving_type = 'Babysitter';
     """
     run_select("5.3 Work hours of all babysitter appointments", sql)
-
 
 def simple_5_4():
     sql = """
@@ -133,7 +125,6 @@ def complex_6_1():
     """
     run_select("6.1 Number of applicants for each job posted by a member", sql)
 
-
 def complex_6_2():
     sql = """
         SELECT
@@ -149,7 +140,6 @@ def complex_6_2():
     """
     run_select("6.2 Total hours spent by caregivers for accepted appointments", sql)
 
-
 def complex_6_3():
     sql = """
         SELECT
@@ -164,7 +154,6 @@ def complex_6_3():
         ORDER BY avg_earnings_per_appointment DESC;
     """
     run_select("6.3 Average pay of caregivers (per accepted appointment)", sql)
-
 
 def complex_6_4():
     sql = """
@@ -187,7 +176,6 @@ def complex_6_4():
         ORDER BY avg_earnings_per_appointment DESC;
     """
     run_select("6.4 Caregivers who earn above average (based on accepted appointments)", sql)
-
 
 def derived_7():
     sql = """
@@ -227,7 +215,6 @@ def view_8_create_and_select():
 
 if __name__ == "__main__":
     print("Connecting to database and executing Assignment 3 Part 2 queries...")
-
    
     update_3_1()
     update_3_2()
@@ -250,4 +237,3 @@ if __name__ == "__main__":
     view_8_create_and_select()
 
     print("\nDone.")
-

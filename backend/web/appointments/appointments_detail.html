@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Appointment Details - {{ appointment.appointment_id }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3>Appointment Details</h3>
+                <div>
+                    <a href="{% url 'appointment_update' appointment.appointment_id %}" class="btn btn-warning">Edit</a>
+                    <a href="{% url 'appointment_list' %}" class="btn btn-secondary">Back to List</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tr><th>Appointment ID</th><td>{{ appointment.appointment_id }}</td></tr>
+                    <tr><th>Caregiver</th><td>{{ appointment.caregiver.caregiver_user.given_name }} {{ appointment.caregiver.caregiver_user.surname }}</td></tr>
+                    <tr><th>Member</th><td>{{ appointment.member.member_user.given_name }} {{ appointment.member.member_user.surname }}</td></tr>
+                    <tr><th>Date</th><td>{{ appointment.appointment_date }}</td></tr>
+                    <tr><th>Time</th><td>{{ appointment.appointment_time }}</td></tr>
+                    <tr><th>Work Hours</th><td>{{ appointment.work_hours }}</td></tr>
+                    <tr>
+                        <th>Status</th>
+                        <td>
+                            <span class="badge 
+                                {% if appointment.status == 'Accepted' %}bg-success
+                                {% elif appointment.status == 'Pending' %}bg-warning
+                                {% elif appointment.status == 'Declined' %}bg-danger
+                                {% else %}bg-secondary{% endif %}">
+                                {{ appointment.status }}
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

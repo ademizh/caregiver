@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Caregiver Platform{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">Caregiver Platform Dashboard</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Users</h5>
+                <p class="card-text">{{ user_count }} total users</p>
+                <a href="{% url 'user_list' %}" class="btn btn-light">Manage Users</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Caregivers</h5>
+                <p class="card-text">{{ caregiver_count }} caregivers</p>
+                <a href="{% url 'caregiver_list' %}" class="btn btn-light">Manage Caregivers</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">Members</h5>
+                <p class="card-text">{{ member_count }} members</p>
+                <a href="{% url 'member_list' %}" class="btn btn-light">Manage Members</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5 class="card-title">Jobs</h5>
+                <p class="card-text">{{ job_count }} active jobs</p>
+                <a href="{% url 'job_list' %}" class="btn btn-light">Manage Jobs</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <a href="{% url 'user_create' %}" class="btn btn-primary">Add New User</a>
+                <a href="{% url 'caregiver_create' %}" class="btn btn-success">Add New Caregiver</a>
+                <a href="{% url 'member_create' %}" class="btn btn-warning">Add New Member</a>
+                <a href="{% url 'job_create' %}" class="btn btn-info">Post New Job</a>
+                <a href="{% url 'appointment_create' %}" class="btn btn-secondary">Create Appointment</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

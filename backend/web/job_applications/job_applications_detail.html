@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Job Application Details{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3>Job Application Details</h3>
+                <div>
+                    <a href="{% url 'job_application_list' %}" class="btn btn-secondary">Back to List</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tr><th>Caregiver</th><td>{{ job_application.caregiver.caregiver_user.given_name }} {{ job_application.caregiver.caregiver_user.surname }}</td></tr>
+                    <tr><th>Job ID</th><td>{{ job_application.job.job_id }}</td></tr>
+                    <tr><th>Job Poster</th><td>{{ job_application.job.member.member_user.given_name }} {{ job_application.job.member.member_user.surname }}</td></tr>
+                    <tr><th>Caregiving Type</th><td>{{ job_application.job.required_caregiving_type }}</td></tr>
+                    <tr><th>Date Applied</th><td>{{ job_application.date_applied }}</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

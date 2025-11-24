@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Job Application{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h3>Create New Job Application</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Caregiver User ID</label>
+                        <input type="number" class="form-control" name="caregiver_user_id" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Job ID</label>
+                        <input type="number" class="form-control" name="job_id" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Date Applied</label>
+                        <input type="date" class="form-control" name="date_applied" required>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'job_application_list' %}" class="btn btn-secondary me-md-2">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Create Application</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

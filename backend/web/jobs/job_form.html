@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if job %}Edit Job{% else %}Create Job{% endif %}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h3>{% if job %}Edit Job{% else %}Create New Job{% endif %}</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Member User ID</label>
+                        <input type="number" class="form-control" name="member_user_id" 
+                               value="{{ job.member_user_id|default:'' }}" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Required Caregiving Type</label>
+                        <select class="form-control" name="required_caregiving_type" required>
+                            <option value="">Select Type</option>
+                            <option value="Babysitter" {% if job.required_caregiving_type == "Babysitter" %}selected{% endif %}>Babysitter</option>
+                            <option value="Elderly Care" {% if job.required_caregiving_type == "Elderly Care" %}selected{% endif %}>Elderly Care</option>
+                            <option value="Playmate" {% if job.required_caregiving_type == "Playmate" %}selected{% endif %}>Playmate</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Other Requirements</label>
+                        <textarea class="form-control" name="other_requirements" rows="3">{{ job.other_requirements|default:'' }}</textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Date Posted</label>
+                        <input type="date" class="form-control" name="date_posted" 
+                               value="{{ job.date_posted|default:'' }}" required>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'job_list' %}" class="btn btn-secondary me-md-2">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Save Job</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

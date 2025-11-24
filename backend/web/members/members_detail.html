@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Member Details - {{ member.member_user.given_name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3>Member Details</h3>
+                <div>
+                    <a href="{% url 'member_update' member.member_user_id %}" class="btn btn-warning">Edit</a>
+                    <a href="{% url 'member_list' %}" class="btn btn-secondary">Back to List</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tr><th>User ID</th><td>{{ member.member_user_id }}</td></tr>
+                    <tr><th>Name</th><td>{{ member.member_user.given_name }} {{ member.member_user.surname }}</td></tr>
+                    <tr><th>Email</th><td>{{ member.member_user.email }}</td></tr>
+                    <tr><th>City</th><td>{{ member.member_user.city }}</td></tr>
+                    <tr><th>House Rules</th><td>{{ member.house_rules|default:"No rules specified" }}</td></tr>
+                    <tr><th>Dependent Description</th><td>{{ member.dependent_description|default:"No description" }}</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

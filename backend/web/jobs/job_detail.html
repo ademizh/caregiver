@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Job Details - {{ job.job_id }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3>Job Details</h3>
+                <div>
+                    <a href="{% url 'job_update' job.job_id %}" class="btn btn-warning">Edit</a>
+                    <a href="{% url 'job_list' %}" class="btn btn-secondary">Back to List</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tr><th>Job ID</th><td>{{ job.job_id }}</td></tr>
+                    <tr><th>Member</th><td>{{ job.member.member_user.given_name }} {{ job.member.member_user.surname }}</td></tr>
+                    <tr><th>Required Caregiving Type</th><td>{{ job.required_caregiving_type }}</td></tr>
+                    <tr><th>Date Posted</th><td>{{ job.date_posted }}</td></tr>
+                    <tr><th>Other Requirements</th><td>{{ job.other_requirements|default:"No additional requirements" }}</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
